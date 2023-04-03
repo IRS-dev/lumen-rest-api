@@ -13,6 +13,14 @@
 |
 */
 
-$router->get('/', function () use ($router) {
+$router->get('/s', function () use ($router) {
     return $router->app->version();
 });
+
+$router->get('/user','UserController@index');
+$router->get('/user/{id}','UserController@show');
+$router->post('/user/create','UserController@create');
+$router->put('/user/{id}','UserController@store');
+$router->delete('/user/{id}','UserController@delete');
+
+
