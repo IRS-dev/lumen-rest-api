@@ -20,7 +20,6 @@ class UserController extends Controller
     {
        return response()->json(User::all());
     }
-
     public function show($id)
     {
         $user = User::find($id);
@@ -29,7 +28,6 @@ class UserController extends Controller
         }
         return response()->json($user);
     }
-
     public function store(Request $request)
     {
         $validated = $this->validate($request,[
@@ -41,7 +39,6 @@ class UserController extends Controller
         $user->save();
         return response()->json($user);
     }
-
     public function update(Request $request, $id)
     {
         $user = User::find($id);
@@ -61,7 +58,6 @@ class UserController extends Controller
             return response()->json($user);
         }
     }
-
     public function delete($id)
     {
         $user = User::find($id);
