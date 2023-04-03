@@ -18,35 +18,58 @@ class UserController extends Controller
 
     public function index()
     {
-        $data = User::all();
-        return response()->json($data, 200, $headers);
+       return response()->json(User::all());
     }
 
     public function show($id)
     {
-        $data = User::find($id);
-        return response()->json($data, 200, $headers);
+        $user = User::find($id);
+        if (empty($user)) {
+            abort(404,"User not found");
+        }
+        return response()->json($user);
     }
 
-    public function create(Request $request)
+    public function store(Request $request)
     {
-        $result['nama'] = $request->nama;
-        $result['email'] = $request->email;
-        $result['alamat']= $request->alamat;
-        $data = $result;
-        return response()->json($data, 200, $headers);
+        $validated = $this->validate($request,[
+            'nama' => 'required|max:255',
+            'email' => 'email|max:255|unique:users,email|required',
+            'alamat' => 'required|max:255'
+        ]);
+        $user = new User($validated);
+        $user->save();
+        return response()->json($user);
     }
-    
-    public function store(Request $request,User $user)
+
+    public function update(Request $request, $id)
     {
-
-
-        return response()->json($data, 200, $headers);
+        $user = User::find($id);
+        if (empty($user)) {
+            abort(404,"User not found");
+        }else{
+            $validated = $this->validate($request,[
+                'nama' => 'required|max:255',
+                'email' => 'email|max:255|required',
+                'alamat' => 'required|max:255'
+            ]);
+            $user->update([
+                'nama'     => $validated['nama'],
+                'email'   => $validated['email'],
+                'alamat' => $validated['alamat']
+            ]);
+            return response()->json($user);
+        }
     }
 
     public function delete($id)
     {
-        User::destroy($id);
-        return response()->json($data, 200, $headers);
+        $user = User::find($id);
+        if (empty($user)) {
+            abort(404,"User not found");
+        }else{
+        $user->delete();
+        return response()->json(['message'=> 'user deleted']);
+        }
     }
 }

@@ -19,8 +19,6 @@ $router->get('/s', function () use ($router) {
 
 $router->get('/user','UserController@index');
 $router->get('/user/{id}','UserController@show');
-$router->post('/user/create','UserController@create');
-$router->put('/user/{id}','UserController@store');
+$router->post('/user/create','UserController@store');
+$router->put('/user/{id}','UserController@update');
 $router->delete('/user/{id}','UserController@delete');
-
-
